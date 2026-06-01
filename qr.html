@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>恩典第34屆沙龍展覽會開幕禮</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #e0f2fe 0%, #60a5fa 50%, #3b82f6 100%);
+            font-family: 'Microsoft JhengHei', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 10px rgba(59, 130, 246, 0.5);
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #1e40af, #3b82f6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .qrcode-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .qrcode-label {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            letter-spacing: 5px;
+            background: linear-gradient(135deg, #fbbf24, #ef4444, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s infinite;
+        }
+
+        /* TODO: 請將下方網址改為實際網址，如 https://192.168.1.231/wel/index.html */
+        .qrcode-img {
+            width: 220px;
+            height: 220px;
+            border-radius: 10px;
+            background-image: url('https://api.qrserver.com/v1/create-qr-code/?data=index.html');
+            background-size: cover;
+            background-position: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .title {
+                font-size: 26px;
+                letter-spacing: 2px;
+                margin-bottom: 30px;
+                line-height: 1.4;
+            }
+
+            .qrcode-box {
+                padding: 20px;
+            }
+
+            .qrcode-img {
+                width: 190px;
+                height: 190px;
+            }
+
+            .qrcode-label {
+                font-size: 24px;
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 22px;
+            }
+
+            .qrcode-img {
+                width: 160px;
+                height: 160px;
+            }
+
+            .qrcode-label {
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .title {
+                font-size: 18px;
+                letter-spacing: 1px;
+            }
+
+            .qrcode-box {
+                padding: 15px;
+            }
+
+            .qrcode-img {
+                width: 140px;
+                height: 140px;
+            }
+
+            .qrcode-label {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">恩典第34屆沙龍展覽會開幕禮</h1>
+        <div class="qrcode-box float-animation">
+            <div class="qrcode-label">開幕</div>
+            <div class="qrcode-img"></div>
+        </div>
+    </div>
+</body>
+</html>
