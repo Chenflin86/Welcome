@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>恩典第34屆沙龍聯展開幕禮</title>
     <style>
         * {
@@ -356,11 +358,31 @@
             display: flex;
         }
 
+        .video-container {
+            position: relative;
+        }
+
         .video-overlay video {
             max-width: 90%;
             max-height: 80vh;
             border-radius: 15px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .play-video-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 40px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            background: rgba(139, 0, 0, 0.9);
+            border: 3px solid #ffd700;
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 10;
         }
 
         .close-video-btn {
@@ -499,6 +521,68 @@
                 font-size: 14px;
             }
         }
+
+        @media (orientation: landscape) {
+            body {
+                padding: 15px;
+                min-height: 100vh;
+                min-height: 100dvh;
+            }
+
+            .container {
+                max-width: 100%;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .main-title {
+                font-size: clamp(20px, 5vw, 40px);
+                margin-bottom: 20px;
+                white-space: nowrap;
+                text-align: center;
+            }
+
+            .btn-container {
+                margin-top: 10px;
+            }
+
+            .magic-btn {
+                width: 160px;
+                height: 160px;
+            }
+
+            .btn-text {
+                font-size: 26px;
+            }
+
+            .bottom-text {
+                margin-top: 30px;
+                font-size: clamp(16px, 3vw, 28px);
+                text-align: center;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 350px) {
+            .magic-btn {
+                width: 110px;
+                height: 110px;
+            }
+
+            .btn-text {
+                font-size: 18px;
+            }
+
+            .main-title {
+                font-size: clamp(16px, 4vw, 32px);
+                margin-bottom: 15px;
+            }
+
+            .bottom-text {
+                margin-top: 20px;
+                font-size: clamp(14px, 2.5vw, 24px);
+            }
+        }
     </style>
 </head>
 <body>
@@ -516,9 +600,12 @@
 
         <div class="video-overlay" id="videoOverlay">
             <button class="close-video-btn" id="closeVideoBtn">×</button>
-            <video id="videoPlayer" controls>
-                <source src="open.mp4" type="video/mp4">
-            </video>
+            <div class="video-container">
+                <video id="videoPlayer" muted playsinline controls>
+                    <source src="open.mp4" type="video/mp4">
+                </video>
+                <button class="play-video-btn" id="playVideoBtn" style="display:none;">点击播放</button>
+            </div>
         </div>
     </div>
 
@@ -527,6 +614,58 @@
         const videoOverlay = document.getElementById('videoOverlay');
         const videoPlayer = document.getElementById('videoPlayer');
         const closeVideoBtn = document.getElementById('closeVideoBtn');
+        const playVideoBtn = document.getElementById('playVideoBtn');
+        let videoReady = false;
+
+        videoPlayer.addEventListener('loadedmetadata', function() {
+            console.log('视频元数据加载完成');
+            videoReady = true;
+        });
+
+        videoPlayer.addEventListener('error', function(e) {
+            console.error('视频加载错误:', e);
+            alert('视频文件加载失败，请检查文件是否存在');
+        });
+
+        videoPlayer.load();
+
+        playBtn.addEventListener('click', function(e) {
+            createParticles(e);
+            createSparkles(e);
+
+            setTimeout(() => {
+                videoOverlay.classList.add('active');
+                playVideoBtn.style.display = 'none';
+                
+                if (videoReady) {
+                    videoPlayer.play().then(() => {
+                        console.log('视频播放成功');
+                    }).catch(err => {
+                        console.error('视频播放失败:', err);
+                        playVideoBtn.style.display = 'block';
+                    });
+                } else {
+                    console.log('视频尚未加载完成，等待加载...');
+                    videoPlayer.addEventListener('loadedmetadata', function playWhenReady() {
+                        videoPlayer.removeEventListener('loadedmetadata', playWhenReady);
+                        videoPlayer.play().catch(err => {
+                            console.error('视频播放失败:', err);
+                            playVideoBtn.style.display = 'block';
+                        });
+                    });
+                }
+            }, 300);
+        });
+
+        playVideoBtn.addEventListener('click', function() {
+            videoPlayer.play().then(() => {
+                playVideoBtn.style.display = 'none';
+                console.log('视频播放成功');
+            }).catch(err => {
+                console.error('视频播放失败:', err);
+                alert('无法播放视频，请检查网络或视频文件');
+            });
+        });
 
         function createParticles(e) {
             const particleCount = 12;
@@ -568,7 +707,13 @@
 
             setTimeout(() => {
                 videoOverlay.classList.add('active');
-                videoPlayer.play();
+                videoPlayer.play().then(() => {
+                    console.log('视频播放成功');
+                }).catch(err => {
+                    console.error('视频播放失败:', err);
+                    alert('视频播放失败，请检查网络或视频文件');
+                    videoOverlay.classList.remove('active');
+                });
             }, 300);
         });
 
