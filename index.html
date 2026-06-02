@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人展</title>
+    <title>恩典第34屆沙龍聯展開幕禮</title>
     <style>
         * {
             margin: 0;
@@ -519,9 +519,6 @@
             <video id="videoPlayer" controls>
                 <source src="open.mp4" type="video/mp4">
             </video>
-            <audio id="audioPlayer" loop>
-                <source src="103.wav" type="audio/wav">
-            </audio>
         </div>
     </div>
 
@@ -529,7 +526,6 @@
         const playBtn = document.getElementById('playBtn');
         const videoOverlay = document.getElementById('videoOverlay');
         const videoPlayer = document.getElementById('videoPlayer');
-        const audioPlayer = document.getElementById('audioPlayer');
         const closeVideoBtn = document.getElementById('closeVideoBtn');
 
         function createParticles(e) {
@@ -573,21 +569,16 @@
             setTimeout(() => {
                 videoOverlay.classList.add('active');
                 videoPlayer.play();
-                audioPlayer.play();
             }, 300);
         });
 
         closeVideoBtn.addEventListener('click', function() {
             videoPlayer.pause();
             videoPlayer.currentTime = 0;
-            audioPlayer.pause();
-            audioPlayer.currentTime = 0;
             videoOverlay.classList.remove('active');
         });
 
         videoPlayer.addEventListener('ended', function() {
-            audioPlayer.pause();
-            audioPlayer.currentTime = 0;
             videoOverlay.classList.remove('active');
         });
 
