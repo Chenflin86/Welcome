@@ -646,6 +646,32 @@
     </div>
 
     <script>
+        function encryptPath() {
+            const originalPath = window.location.pathname;
+            const encoded = btoa(originalPath).replace(/=/g, '');
+            if (window.history && window.history.pushState) {
+                try {
+                    history.pushState({}, '', '/'+encoded);
+                } catch(e) {
+                    window.location.hash = encoded;
+                }
+            }
+        }
+
+        function enterFullscreen(element) {
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            }
+        }
+
+        encryptPath();
+
         const playBtn = document.getElementById('playBtn');
         const videoOverlay = document.getElementById('videoOverlay');
         const videoPlayer = document.getElementById('videoPlayer');
@@ -676,6 +702,7 @@
                 if (videoReady) {
                     videoPlayer.play().then(() => {
                         console.log('视频播放成功');
+                        enterFullscreen(videoPlayer);
                     }).catch(err => {
                         console.error('视频播放失败:', err);
                         playVideoBtn.style.display = 'block';
@@ -684,7 +711,9 @@
                     console.log('视频尚未加载完成，等待加载...');
                     videoPlayer.addEventListener('loadedmetadata', function playWhenReady() {
                         videoPlayer.removeEventListener('loadedmetadata', playWhenReady);
-                        videoPlayer.play().catch(err => {
+                        videoPlayer.play().then(() => {
+                            enterFullscreen(videoPlayer);
+                        }).catch(err => {
                             console.error('视频播放失败:', err);
                             playVideoBtn.style.display = 'block';
                         });
@@ -697,6 +726,7 @@
             videoPlayer.play().then(() => {
                 playVideoBtn.style.display = 'none';
                 console.log('视频播放成功');
+                enterFullscreen(videoPlayer);
             }).catch(err => {
                 console.error('视频播放失败:', err);
                 alert('无法播放视频，请检查网络或视频文件');
