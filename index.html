@@ -118,7 +118,7 @@
             letter-spacing: 4px;
             margin-bottom: 0;
             font-weight: bold;
-            background: linear-gradient(135deg, #ffd700 0%, #ffec8b 30%, #ffd700 50%, #f5deb3 70%, #ffd700 100%);
+            background: linear-gradient(135deg, #343434 0%, #ffec8b 30%, #ffd700 50%, #f5deb3 70%, #ffd700 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -722,6 +722,14 @@
                     });
                 }
             }, 300);
+
+            setTimeout(() => {
+                const btnText = playBtn.querySelector('.btn-text');
+                if (btnText) {
+                    btnText.textContent = '剪綵完結';
+                    btnText.style.fontSize = '24px';
+                }
+            }, 2000);
         });
 
         playVideoBtn.addEventListener('click', function() {
